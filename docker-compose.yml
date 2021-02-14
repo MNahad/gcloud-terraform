@@ -1,0 +1,33 @@
+version: "3.9"
+
+x-base: &base
+  volumes:
+    - ./project:/project
+  working_dir: /project
+  stdin_open: true
+  tty: true
+
+services:
+
+  gcloud:
+    <<: *base
+    image: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
+    ports:
+      - "127.0.0.1:0-65535:0-65535"
+    entrypoint: ["gcloud"]
+    env_file: .docker/.env/.gcloud.env
+
+  terraform:
+    <<: *base
+    image: hashicorp/terraform:latest
+    entrypoint: ["terraform"]
+    env_file: .docker/.env/.terraform.env
+
+  firebase:
+    <<: *base
+    build:
+      context: .docker/images/firebase
+    ports:
+      - "127.0.0.1:0-65535:0-65535"
+    entrypoint: ["firebase"]
+    env_file: .docker/.env/.firebase.env

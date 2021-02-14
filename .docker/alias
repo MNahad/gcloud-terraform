@@ -1,0 +1,3 @@
+#!/bin/sh
+alias emulator="docker-compose run --rm gcloud beta emulators"
+alias firebase-tools="docker-compose run --rm firebase"
